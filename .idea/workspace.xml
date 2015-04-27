@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="572026e6-8a1b-4370-9128-0c0577d0d02f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/BinaryHeap.java" afterPath="$PROJECT_DIR$/src/core/BinaryHeap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/Label.java" afterPath="$PROJECT_DIR$/src/core/Label.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/Pcc.java" afterPath="$PROJECT_DIR$/src/core/Pcc.java" />
-    </list>
+    <list default="true" id="572026e6-8a1b-4370-9128-0c0577d0d02f" name="Default" comment="" />
     <ignored path="BE_Graphe.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
