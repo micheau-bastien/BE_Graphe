@@ -16,7 +16,7 @@ import java.util.* ;
  * @author DLB
  */
 public class BinaryHeap<E extends Comparable<E>> {
-
+	protected HashMap<Integer, E> tablePos = new HashMap<Integer, E>();
     private int currentSize; // Number of elements in heap
 
     // Java genericity does not work with arrays.
@@ -33,18 +33,19 @@ public class BinaryHeap<E extends Comparable<E>> {
 
     // Constructor used for debug.
     private BinaryHeap(BinaryHeap<E> heap) {
-	this.currentSize = heap.currentSize ;
-	this.array = new ArrayList<E>(heap.array) ;
+		this.currentSize = heap.currentSize ;
+		this.array = new ArrayList<E>(heap.array) ;
     }
 
     // Sets an element in the array
     private void arraySet(int index, E value) {
-	if (index == this.array.size()) {
-	    this.array.add(value) ;
-	}
-	else {
-	    this.array.set(index, value) ;
-	}
+		if (index == this.array.size()) {
+			this.array.add(value);
+			
+		}
+		else {
+			this.array.set(index, value) ;
+		}
     }
 
     /**

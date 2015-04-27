@@ -13,7 +13,7 @@ public class Pcc extends Algo {
     protected int zoneDestination ;
     protected int destination ;
     protected ArrayList<Label> listeLabel = new ArrayList<Label>();
-
+    protected BinaryHeap<Label> tasLabel = new BinaryHeap<Label>();
 
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg) {
         super(gr, sortie, readarg) ;
@@ -28,6 +28,23 @@ public class Pcc extends Algo {
         for (Noeud noeud : gr.getListeNoeuds()){
             this.listeLabel.set(noeud.getNumNoeud(), new Label(-1, noeud.getNumNoeud()));
         }
+    }
+
+    public void Dijkstra (Graphe gr, int numCourant, int cout){
+        ArrayList<Noeud> listeNoeud = gr.getListeNoeuds();
+        Noeud noeudCourant = listeNoeud.get(numCourant);
+        int coutMin = Integer.MAX_VALUE;
+        int numParent = 0;
+
+        for (Route route : noeudCourant.getListeRoutes()){
+
+        }
+    }
+
+    private boolean inTas(int numCherche){
+        boolean result = false;
+
+        return result;
     }
 
     public Label getLabel(int numNoeud){    return this.listeLabel.get(numNoeud);   }

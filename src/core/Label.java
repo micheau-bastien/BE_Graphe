@@ -1,9 +1,11 @@
 package core;
 
+import java.util.Comparator;
+
 /**
  * Created by Bastien on 10/04/15.
  */
-public class Label {
+public class Label implements Comparable<Label> {
 
     private boolean marquage;
     private int cout ;
@@ -23,6 +25,20 @@ public class Label {
         this.marquage = false ;
         this.cout = Integer.MAX_VALUE;
     }
+
+    public int compareTo(Label label) {
+        if (this.cout > label.getCout()){
+            return 1;
+
+        }else if (this.getCout() == label.getCout()){
+            return 0;
+        }else{
+            return -1;
+        }
+    }
+
+
+
 
     // SETTERS
     public void setCout(int cout){  this.cout = cout;   }
