@@ -37,8 +37,10 @@ public class Label implements Comparable<Label> {
         }
     }
 
-
-
+    //TOSTRING
+    public String toString(){
+        return "Label - Courant : "+this.numSommetCourant+" - Parent : "+this.numPere+" - Cout : "+this.cout + " - Mark : "+this.isMarked();
+    }
 
     // SETTERS
     public void setCout(Integer cout){  this.cout = cout;   }

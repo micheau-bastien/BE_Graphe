@@ -222,7 +222,10 @@ public class BinaryHeap<E extends Comparable<E>> {
 	public E getElement(E e){ return array.get(getPosition(e)); }
 
 	// replace
-	public void replace(E depart, E fin){ array.set(getPosition(depart), fin); }
+	public void replace(E depart, E fin){
+		array.set(getPosition(depart), fin);
+		update(fin);
+	}
 
 	// delete
 	public  void delete(E e){	this.array.remove(getPosition(e));	}

@@ -99,7 +99,7 @@ public class Launch {
 				Chemin chemin = new Chemin(cheminData, graphe);
 				System.out.println("Temps du trajet  : " + chemin.tempsChemin());
 				System.out.println("Longueur du trajet : " + chemin.longueurChemin());
-
+				break;
 
 		default:
 		    System.out.println ("Choix de menu incorrect : " + choix) ;
