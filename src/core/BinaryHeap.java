@@ -16,7 +16,7 @@ import java.util.* ;
  * @author DLB
  */
 public class BinaryHeap<E extends Comparable<E>> {
-	protected HashMap<Integer, E> tablePos = new HashMap<Integer, E>();
+	protected HashMap<E, Integer> tablePos = new HashMap<E, Integer>();
     private int currentSize; // Number of elements in heap
 
     // Java genericity does not work with arrays.
@@ -41,10 +41,11 @@ public class BinaryHeap<E extends Comparable<E>> {
     private void arraySet(int index, E value) {
 		if (index == this.array.size()) {
 			this.array.add(value);
-			
+			tablePos.put(value, index);
 		}
 		else {
 			this.array.set(index, value) ;
+			tablePos.put(value, index);
 		}
     }
 
@@ -80,9 +81,10 @@ public class BinaryHeap<E extends Comparable<E>> {
      * @param x the item to insert.
      */
     public void insert(E x) {
-	int index = this.currentSize++ ;
-	this.arraySet(index, x) ;
-	this.percolateUp(index) ;
+		int index = this.currentSize++ ;
+		this.arraySet(index, x) ;
+		this.percolateUp(index) ;
+		tablePos.put(x, index);
     }
 
     /**
@@ -91,12 +93,10 @@ public class BinaryHeap<E extends Comparable<E>> {
      */
     private void percolateUp(int index) {
 		E x = this.array.get(index) ;
-
 		for( ; index > 0 && x.compareTo(this.array.get(index_parent(index)) ) < 0; index = index_parent(index) ) {
 			E moving_val = this.array.get(index_parent(index)) ;
 			this.arraySet(index, moving_val) ;
 		}
-
 		this.arraySet(index, x) ;
 	}
 
@@ -150,6 +150,7 @@ public class BinaryHeap<E extends Comparable<E>> {
      */
     public E deleteMin( ) {
         E minItem = findMin( );
+		tablePos.remove(minItem);
 		E lastItem = this.array.get(--this.currentSize) ;
         this.arraySet(0, lastItem) ;
         this.percolateDown( 0 );
@@ -202,7 +203,12 @@ public class BinaryHeap<E extends Comparable<E>> {
 			percolateUp(array.indexOf(element));
 		}
 	}
-    
+
+	//Search
+	public int getPosition(E element){
+		return tablePos.get(element);
+	}
+
     // Test program : compare with the reference implementation PriorityQueue.
     public static void main(String [] args) {
 			BinaryHeap<Integer> heap = new BinaryHeap<Integer>() ;
