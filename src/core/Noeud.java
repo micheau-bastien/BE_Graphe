@@ -25,6 +25,7 @@ public class Noeud {
 	private int numNoeud;
 	private static int nbNoeud = 0;
 	private ArrayList<Route> listeRoutes = new ArrayList<Route>();
+	private int nbRoutes = 0;
 	
 	/* public Noeud(DataInputStream dis) throws IOException{
 		this.longitude = ((float)dis.readInt ()) / 1E6f ;
@@ -40,11 +41,12 @@ public class Noeud {
 		this.listeRoutes = rtes;
 	} */
 
-	public Noeud(float longi,float lati,int nbR){
+	public Noeud(float longi,float lati, int nbR){
 		this.numNoeud = nbNoeud;
 		nbNoeud++;
 		this.longitude = longi;
 		this.latitude = lati;
+        this.nbRoutes = nbR;
 	}
 
 	public void findRoutes(DataInputStream dis) throws IOException{
@@ -56,7 +58,7 @@ public class Noeud {
 
 	public void addRoute(Route route){ this.listeRoutes.add(route); }
 
-	public int getNbRoutes(){ return this.listeRoutes.size(); }
+	public int getNbRoutes(){ return this.nbRoutes; }
 
 	public ArrayList<Route> getListeRoutes() { return this.listeRoutes; }
 

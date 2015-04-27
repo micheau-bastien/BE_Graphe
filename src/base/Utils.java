@@ -9,11 +9,11 @@ public class Utils {
     	
     // Verifie que l'octet lu est bien l'octet attendu
     public static void checkByte(int val, DataInputStream dis) throws IOException {
-	int octet = dis.readUnsignedByte () ;
-	if (octet != val) {
-	    System.out.println("checkByte error : octet attendu = " + val + "   octet lu = " + octet) ;
-	    System.exit(1) ;
-	}
+		int octet = dis.readUnsignedByte () ;
+		if (octet != val) {
+			System.out.println("checkByte error : octet attendu = " + val + "   octet lu = " + octet) ;
+			System.exit(1) ;
+		}
     }
     
     public static int read24bits(DataInputStream dis) throws IOException {

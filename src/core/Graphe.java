@@ -43,6 +43,7 @@ public class Graphe {
     // Deux malheureux getters.
     public Dessin getDessin() { return dessin ; }
     public int getZone() { return numzone ; }
+
 	private ArrayList<Noeud> listeNoeuds = new ArrayList<Noeud>();
 
 
@@ -84,6 +85,7 @@ public class Graphe {
 				float longitude = ((float)dis.readInt ()) / 1E6f ;
 				float latitude = ((float)dis.readInt ()) / 1E6f ;
 				int nbRoute = dis.readUnsignedByte() ;
+                System.out.println(nbRoute);
 				Noeud noeud = new Noeud(longitude, latitude, nbRoute);
 				this.listeNoeuds.add(noeud);
 			}
@@ -102,9 +104,17 @@ public class Graphe {
 
 			Utils.checkByte(254, dis) ;
 
+
+
+
+
+
+
+
 			// Lecture des successeurs
 			for (Noeud noeud : this.listeNoeuds){
 				// Lecture de tous les successeurs du noeud num_node
+                System.out.println(noeud.getNbRoutes());
 				for (int num_succ = 0 ; num_succ < noeud.getNbRoutes() ; num_succ++) {
 					// Liste des segments à ajouter à chaque route
 					ArrayList<Segment> listeSegments = new ArrayList<Segment>();
@@ -165,9 +175,7 @@ public class Graphe {
 			}
 
 			Utils.checkByte(253, dis) ;
-
-			System.out.println("Fichier lu : " + nb_nodes + " sommets, " + edges + " aretes, "
-					+ nb_descripteurs + " descripteurs.") ;
+			System.out.println("Fichier lu : " + nb_nodes + " sommets, " + edges + " aretes, " + nb_descripteurs + " descripteurs.") ;
 
 		} catch (IOException e) {
 			e.printStackTrace() ;
