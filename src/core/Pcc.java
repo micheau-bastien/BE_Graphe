@@ -30,21 +30,71 @@ public class Pcc extends Algo {
         }
     }
 
-    public void Dijkstra (Graphe gr, int numCourant, int cout){
+    public ArrayList<Label> Dijkstra (Graphe gr, int numCourant, int cout, int numDest){
+        Label labelCourant = this.listeLabel.get(numCourant);
         ArrayList<Noeud> listeNoeud = gr.getListeNoeuds();
         Noeud noeudCourant = listeNoeud.get(numCourant);
         int coutMin = Integer.MAX_VALUE;
-        int numParent = 0;
+        Integer numParent = null;
+        boolean trouve = false;
+        Label labelFinal = new Label(0, numDest, Integer.MAX_VALUE);
+        ArrayList<Label> termine = new ArrayList<Label>();
 
-        for (Route route : noeudCourant.getListeRoutes()){
+        this.tasLabel.insert(labelCourant);
 
+        while (!this.tasLabel.isEmpty() && trouve==false) {
+            for (Route route : noeudCourant.getListeRoutes()) {
+                Label labelDest = this.listeLabel.get(route.getNoeudDest());
+                if (labelDest.getNumSommetCourant() == numDest) {
+                    trouve = true;
+                    labelFinal.setCout(cout + route.getLongueur());
+                    labelFinal.setMarked();
+                    labelFinal.setNumPere(numCourant);
+                    termine.add(labelFinal);
+                } else {
+                    if (this.tasLabel.inTas(labelDest) || termine.contains(labelDest)) {
+                        if (labelDest.isMarked()) {
+                            if (labelDest.getCout() + route.getLongueur() <= coutMin) {
+                                coutMin = labelDest.getCout() + route.getLongueur();
+                                numParent = labelDest.getNumSommetCourant();
+                            }
+                        } else {
+                            if (cout + route.getLongueur() <= labelDest.getCout()) {
+                                Label labelAncien = labelDest;
+                                labelDest.setCout(cout + route.getLongueur());
+                                Label labelNouveau = labelDest;
+                                this.tasLabel.replace(labelAncien, labelNouveau);
+                                this.tasLabel.update(labelNouveau);
+                            }
+                        }
+                    } else {
+                        labelDest.setCout(cout + route.getLongueur());
+                        this.tasLabel.insert(labelDest);
+                    }
+                }
+            }
+            labelCourant.setMarked();
+            labelCourant.setNumPere(numParent);
+            termine.add(labelCourant);
+            this.tasLabel.delete(labelCourant);
+            Label labelSuivant = this.tasLabel.findMin();
+            noeudCourant = listeNoeud.get(this.tasLabel.findMin().getNumSommetCourant());
         }
+        if(this.tasLabel.isEmpty()){
+            System.out.println("IMPOSSIBLE !");
+        }
+        return findBestWay(termine, labelFinal);
     }
 
-    private boolean inTas(int numCherche){
-        boolean result = false;
-
-        return result;
+    private ArrayList<Label> findBestWay(ArrayList<Label> datas, Label fin){
+        ArrayList<Label> chemin = new ArrayList<Label>();
+        chemin.add(fin);
+        Label courant = this.listeLabel.get(fin.getNumPere());
+        while (courant.getNumPere() == null){
+            chemin.add(courant);
+            courant = this.listeLabel.get(courant.getNumPere());
+        }
+        return chemin;
     }
 
     public Label getLabel(int numNoeud){    return this.listeLabel.get(numNoeud);   }

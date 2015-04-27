@@ -8,18 +8,18 @@ import java.util.Comparator;
 public class Label implements Comparable<Label> {
 
     private boolean marquage;
-    private int cout ;
-    private int numPere ;
-    private int numSommetCourant;
+    private Integer cout ;
+    private Integer numPere ;
+    private Integer numSommetCourant;
 
-    public Label(int numPere, int numSommetCourant, int cout) {
+    public Label(Integer numPere, Integer numSommetCourant, Integer cout) {
         this.numPere =  numPere ;
         this.numSommetCourant = numSommetCourant ;
         this.marquage = false ;
         this.cout = cout;
     }
 
-    public Label(int numPere, int numSommetCourant) {
+    public Label(Integer numPere, Integer numSommetCourant) {
         this.numPere =  numPere ;
         this.numSommetCourant = numSommetCourant ;
         this.marquage = false ;
@@ -41,12 +41,14 @@ public class Label implements Comparable<Label> {
 
 
     // SETTERS
-    public void setCout(int cout){  this.cout = cout;   }
+    public void setCout(Integer cout){  this.cout = cout;   }
+    public void setMarked() {   this.marquage = true;   }
+    public void setNumPere(Integer numPere) {  this.numPere = numPere;  }
 
     // GETTERS
-    public int getCout(){   return this.cout;   }
-    public int getNumPere(){   return this.numPere;   }
-    public int getNumSommetCourant(){   return this.numSommetCourant;   }
+    public Integer getCout(){   return this.cout;   }
+    public Integer getNumPere(){   return this.numPere;   }
+    public Integer getNumSommetCourant(){   return this.numSommetCourant;   }
     public boolean isMarked(){    return this.marquage;   }
 
 }

@@ -43,11 +43,11 @@ public class BinaryHeap<E extends Comparable<E>> {
     private void arraySet(int index, E value) {
 		if (index == this.array.size()) {
 			this.array.add(value);
-			tablePos.put(value, index);
+			tablePos.put(value, Integer.valueOf(index));
 		}
 		else {
 			this.array.set(index, value) ;
-			tablePos.put(value, index);
+			tablePos.put(value, Integer.valueOf(index));
 		}
     }
 
@@ -155,7 +155,7 @@ public class BinaryHeap<E extends Comparable<E>> {
 		tablePos.remove(minItem);
 		E lastItem = this.array.get(--this.currentSize) ;
         this.arraySet(0, lastItem) ;
-        this.percolateDown( 0 );
+        this.percolateDown(0);
         return minItem;
     }
     
@@ -207,9 +207,25 @@ public class BinaryHeap<E extends Comparable<E>> {
 	}
 
 	//Search
-	public int getPosition(E element){
-		return tablePos.get(element);
+	private Integer getPosition(E element){ return tablePos.get(element); }
+
+	//inTas
+	public boolean inTas(E e){
+		if (this.getPosition(e) != null){
+			return true;
+		}else{
+			return false;
+		}
 	}
+
+	// getElement
+	public E getElement(E e){ return array.get(getPosition(e)); }
+
+	// replace
+	public void replace(E depart, E fin){ array.set(getPosition(depart), fin); }
+
+	// delete
+	public  void delete(E e){	this.array.remove(getPosition(e));	}
 
     // Test program : compare with the reference implementation PriorityQueue.
     public static void main(String [] args) {
