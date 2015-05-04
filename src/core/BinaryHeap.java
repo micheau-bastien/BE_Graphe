@@ -228,7 +228,10 @@ public class BinaryHeap<E extends Comparable<E>> {
 	}
 
 	// delete
-	public  void delete(E e){	this.array.remove(getPosition(e));	}
+	public  void delete(E e){
+		int parent = this.index_parent(getPosition(e));
+        this.array.remove(getPosition(e));
+	}
 
     // Test program : compare with the reference implementation PriorityQueue.
     public static void main(String [] args) {
