@@ -60,6 +60,9 @@ public class Descripteur {
 		this.nom = dis.readUTF() ;
     }
 
+	public int getVitMax(){
+		return this.vitMax;
+	}
     public String toString() {
 		String oneway = "" ;
 		

@@ -39,8 +39,15 @@ public class Chemin {
         }
     }
 
+    public Chemin(int nbNoeuds, int numNoeudArrivee, int numNoeudDepart, ArrayList<Route> listeRoutes){
+        this.nbNoeuds = nbNoeuds;
+        this.numNoeudArrivee = numNoeudArrivee;
+        this.numNoeudDepart = numNoeudDepart;
+        this.listeRoutes = listeRoutes;
+    }
+
     private Route meilleureRoute(Noeud depart, Noeud arrivee){
-        int longueurMin = Integer.MAX_VALUE;
+        float longueurMin = Float.MAX_VALUE;
         Route bonneRoute= null;
         for (Route route : depart.getListeRoutes()){
             if (route.getNoeudDest() == arrivee.getNumNoeud()){

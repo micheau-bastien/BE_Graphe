@@ -23,7 +23,7 @@ public class Route {
 	private int noeudDest;
 	private int numDescr;
 	private Descripteur descripteur;
-	private int longueur;
+	private float longueur;
 	private int nbSegments;
 	private ArrayList<Segment> segments = new ArrayList<Segment>();
 	public static int nbRoutes = 0;
@@ -46,7 +46,7 @@ public class Route {
 	    }
 	}
 
-	public Route(int zoneDest, int noeudDest, Descripteur descripteur, int longueur, int nbSegments, ArrayList<Segment> segments){
+	public Route(int zoneDest, int noeudDest, Descripteur descripteur, float longueur, int nbSegments, ArrayList<Segment> segments){
 		this.zoneDest = zoneDest;
 		this.noeudDest = noeudDest;
 		this.descripteur = descripteur;
@@ -55,6 +55,7 @@ public class Route {
 		this.segments = segments;
 	}
 
+	public int getVitMax(){ return this.descripteur.getVitMax();}
 	public int getNumDescr(){
 		return this.numDescr;
 	}
@@ -63,5 +64,5 @@ public class Route {
 	}
 	public int getNoeudDest(){ return this.noeudDest; }
 	public Descripteur getDescripteur(){ return this.descripteur; }
-	public int getLongueur(){ return this.longueur; }
+	public float getLongueur(){ return this.longueur; }
 }

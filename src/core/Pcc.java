@@ -1,120 +1,169 @@
 package core ;
 
+import java.awt.*;
 import java.io.* ;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import base.Couleur;
 import base.Readarg ;
 
 public class Pcc extends Algo {
 
     // Numero des sommets origine et destination
+
+
+
     protected int zoneOrigine ;
-    protected int origine ;
     protected int zoneDestination ;
+
+    protected int origine ;
     protected int destination ;
+
     protected ArrayList<Label> listeLabel = new ArrayList<Label>();
     protected BinaryHeap<Label> tasLabel = new BinaryHeap<Label>();
+    protected Boolean pccTime = false;
+    protected Graphe gr;
 
     public Pcc(Graphe gr, PrintStream sortie, Readarg readarg) {
         super(gr, sortie, readarg) ;
+        this.gr = gr;
         this.zoneOrigine = gr.getZone() ;
-        this.origine = readarg.lireInt("Numero du sommet d'origine ? ") ;
-        // Demander la zone et le sommet destination.
-        this.zoneOrigine = gr.getZone () ;
-        this.destination = readarg.lireInt("Numero du sommet destination ? ");
-        createLabelTable(gr);
-        showBestWay(gr, this.origine, this.destination);
     }
 
-    public void createLabelTable (Graphe gr){
-        for (Noeud noeud : gr.getListeNoeuds()){
-            this.listeLabel.add(new Label(-1, noeud.getNumNoeud()));
+    public Pcc(Graphe gr, PrintStream sortie, Readarg readarg, int dep, int arr, boolean isTime) {
+        super(gr, sortie, readarg) ;
+        System.out.println();
+        this.gr = gr;
+        this.origine = dep;
+        this.destination = arr;
+        this.pccTime = isTime;
+        this.zoneOrigine = gr.getZone() ;
+        ArrayList<Label> CheminPlucCourt = Dijkstra();
+    }
+
+    public ArrayList<Label> Dijkstra (){
+        this.tasLabel.viderTas();
+        this.listeLabel.clear();
+        System.out.println("Dijkstra : ");
+        tasLabel.viderTas();
+        this.listeLabel.clear();
+        // On prend le temps initial du programme (Estimation de performance)
+        long tempsInit = System.currentTimeMillis(), duree;
+        int nbTas = 0, nbDansTas = 0, nbDansTasMax = 0, numCourant, numDest;
+        float cout;
+        for (Noeud noeud : this.gr.getListeNoeuds()){
+            this.listeLabel.add(null);
         }
-    }
 
-    public ArrayList<Label> cheminCourt(Graphe gr, int numCourant, int numDest){
-        ArrayList<Noeud> listeNoeud = gr.getListeNoeuds();
+        // On défini le premier label à regarder et on l'ajoute au tas
+        this.listeLabel.set(this.origine, new Label(null, this.origine, 0, true, pccTime));
+        this.tasLabel.insert(this.listeLabel.get(this.origine));
+        nbDansTas++;
 
-        Label labelFinal = new Label(0, numDest, Integer.MAX_VALUE);
-        Noeud noeudCourant, noeudDest;
-        Label labelCourant = new Label(null, numCourant, 0), labelDest;
-
-        boolean trouve = false;
-        labelCourant.setMarked();
-        this.tasLabel.insert(labelCourant);
-
-        while (!trouve && !this.tasLabel.isEmpty()){
-            labelCourant = this.tasLabel.deleteMin();
-            noeudCourant = listeNoeud.get(labelCourant.getNumSommetCourant());
-
-            for (Route r : noeudCourant.getListeRoutes()){
-                noeudDest = listeNoeud.get(r.getNoeudDest());
-                labelDest = this.listeLabel.get(r.getNoeudDest());
-                if (noeudDest.getNumNoeud() == numDest){
-                    trouve = true;
-                    labelFinal.setCout(labelCourant.getCout() + r.getLongueur());
-                    labelFinal.setMarked();
-                    labelFinal.setNumPere(labelCourant.getNumSommetCourant());
-                    this.listeLabel.set(labelFinal.getNumSommetCourant(), labelFinal);
-                }else {
-                    if (labelDest.isMarked()) {
-                    } else if (this.tasLabel.inTas(labelDest)) {
-                        if (labelCourant.getCout() + r.getLongueur() <= labelDest.getCout()) {
-                            Label labelAncien = labelDest;
-                            labelDest.setCout(labelCourant.getCout() + r.getLongueur());
-                            labelDest.setNumPere(labelCourant.getNumSommetCourant());
-                            Label labelNouveau = labelDest;
-                            this.tasLabel.replace(labelAncien, labelNouveau);
-                            this.tasLabel.update(labelNouveau);
-                            this.listeLabel.set(labelNouveau.getNumSommetCourant(), labelNouveau);
+        // Tant que non trouvé et que le tas n'est pas vide
+        while (!this.tasLabel.isEmpty()){
+            // On défini le label et ne noeud courant ET on supprime le minimum
+            numCourant = this.tasLabel.deleteMin().getNumSommetCourant();
+            nbDansTas--;
+            if (numCourant == this.destination){
+                //on renseigne ses attributs
+                duree = System.currentTimeMillis() - tempsInit;
+                if (pccTime){   System.out.print("Chemin de "+this.origine+" long : "+gr.getListeNoeuds().get(this.origine).getLongitude()+" | Lat : "+gr.getListeNoeuds().get(this.origine).getLatitude()+" à " + this.destination + " long : "+gr.getListeNoeuds().get(this.destination).getLongitude()+" | Lat : "+gr.getListeNoeuds().get(this.destination).getLatitude()+" trouvé en " + duree + "ms et en " + nbTas + " noeuds parcourus, le cout a été de " + this.listeLabel.get(numCourant).getCout() + "min avec un nombre de noeuds dans le tas max de "+nbDansTasMax+" et en passant par les noeuds ");   }
+                else {  System.out.print("Chemin de "+this.origine +" long : "+gr.getListeNoeuds().get(this.origine).getLongitude()+" | Lat : "+gr.getListeNoeuds().get(this.origine).getLatitude()+" à " + this.destination + " long : "+gr.getListeNoeuds().get(this.destination).getLongitude()+" | Lat : "+gr.getListeNoeuds().get(this.destination).getLatitude()+" trouvé en " + duree + "ms et en " + nbTas + " noeuds parcourus, le cout a été de " + this.listeLabel.get(numCourant).getCout() + "m avec un nombre de noeuds dans le tas max de "+nbDansTasMax+" et en passant par les noeuds "); }
+                return findBestWay(this.listeLabel.get(this.destination), Color.CYAN);
+                // Sinon (pas encore trouvé)
+            }
+            // Pour toutes les routes qui découlent du noeud
+            for (Route r : this.gr.getListeNoeuds().get(numCourant).getListeRoutes()){
+                if(pccTime){    cout = listeLabel.get(numCourant).getCout() + (60*r.getLongueur())/(1000*r.getVitMax()); }
+                else {  cout = listeLabel.get(numCourant).getCout()+r.getLongueur(); }
+                numDest = r.getNoeudDest();
+                if(this.listeLabel.get(numDest) == null){
+                    this.listeLabel.set(numDest, new Label(numCourant, numDest, Float.MAX_VALUE, false, pccTime));
+                }
+                if(cout < listeLabel.get(numDest).getCout()){
+                    listeLabel.get(numDest).setNumPere(numCourant);
+                    listeLabel.get(numDest).setCout(cout);
+                    if(!tasLabel.inTas(listeLabel.get(numDest))){
+                        nbDansTas ++;   nbTas ++;
+                        if(nbDansTas > nbDansTasMax){
+                            nbDansTasMax = nbDansTas;
                         }
-                    } else {
-                        labelDest.setCout(labelCourant.getCout() + r.getLongueur());
-                        labelDest.setNumPere(labelCourant.getNumSommetCourant());
-                        this.tasLabel.insert(labelDest);
-                        this.listeLabel.set (labelDest.getNumSommetCourant(), labelDest);
+                        this.tasLabel.insert(listeLabel.get(numDest));
+                    }else{
+                        tasLabel.update(listeLabel.get(numDest));
                     }
                 }
             }
-            System.out.println("LE NUM PARENT DE "+ labelCourant.getNumSommetCourant() +" EST : " + labelCourant.getNumPere());
-            labelCourant.setMarked();
-            System.out.println(labelCourant);
-            this.listeLabel.set(labelCourant.getNumSommetCourant(), labelCourant);
+            // On marque le label courant pour dire qu'il a été traité et ne sera pas modifié
+            this.listeLabel.get(numCourant).setMarked();
         }
-        if(this.tasLabel.isEmpty()){
-            System.out.println("IMPOSSIBLE !");
-            return listeLabel;
-        }else {
-            return findBestWay(labelFinal);
-        }
+        duree = System.currentTimeMillis() - tempsInit;
+        System.out.println("Le chemin de " + this.origine +" long : "+gr.getListeNoeuds().get(this.origine).getLongitude()+" | Lat : "+gr.getListeNoeuds().get(this.origine).getLatitude()+" à " + this.destination + " long : "+gr.getListeNoeuds().get(this.destination).getLongitude()+" | Lat : "+gr.getListeNoeuds().get(this.origine).getLatitude()+ " n'existe pas ! Nous avons trouvé en " + duree + "ms et " + nbTas + "sommets parcourus que le sommet ne mène à rien !");
+        return new ArrayList<Label>();
     }
 
-    private ArrayList<Label> findBestWay(Label fin){
-        ArrayList<Label> chemin = new ArrayList<Label>();
-        chemin.add(fin);
-        Label courant = this.listeLabel.get(fin.getNumPere());
-        //System.out.println(this.listeLabel + "                   " + courant);
-        while (courant.getNumPere() != null){
-            chemin.add(courant);
-            System.out.println(courant.getNumSommetCourant() + "            " + courant.getNumPere());
-            courant = this.listeLabel.get(courant.getNumPere());
+    protected ArrayList<Label> findBestWay(Label fin, Color couleur){
+        ArrayList<Label> listeFinal = new ArrayList<Label>();
+        listeFinal.add(fin);
+        if (fin.getNumPere() != null) {
+            Label courant = this.listeLabel.get(fin.getNumPere());
+            while (courant.getNumPere() != null) {
+                listeFinal.add(courant);
+                courant = this.listeLabel.get(courant.getNumPere());
+            }
         }
-        System.out.println("Chemin : " + chemin);
-        return chemin;
+        gr.getDessin().setColor(couleur);
+        float longitudeDep, latitudeDep, longitudeArr, latitudeArr;
+        for (Label l : listeFinal){
+            longitudeArr = gr.getListeNoeuds().get(l.getNumSommetCourant()).getLongitude();
+            latitudeArr = gr.getListeNoeuds().get(l.getNumSommetCourant()).getLatitude();
+            if (l.getNumPere() != null) {
+                longitudeDep = gr.getListeNoeuds().get(l.getNumPere()).getLongitude();
+                latitudeDep = gr.getListeNoeuds().get(l.getNumPere()).getLatitude();
+            }else{
+                longitudeDep = longitudeArr;
+                latitudeDep = latitudeArr;
+            }
+            //System.out.println("A afficher "+l.getNumPere()+ " : "+longitudeArr+"     "+ latitudeArr +" "+l.getNumSommetCourant()+"    "+ longitudeDep+"     "+latitudeDep);
+            gr.getDessin().drawLine(longitudeDep, latitudeDep, longitudeArr, latitudeArr) ;
+        }
+        Chemin chemin = new Chemin(listeFinal.size(), this.destination, this.origine, LabelToRoad(listeFinal));
+        return listeFinal;
     }
 
-    public void showBestWay(Graphe gr, int numCourant, int numDest){
-        ArrayList<Label> chemin = cheminCourt(gr, numCourant, numDest);
-        for (Label l : chemin){
-            System.out.println(l);
+    // Fonction crée par erreur de conception initiale
+    protected ArrayList<Route> LabelToRoad (ArrayList<Label> listeLabel){
+        ArrayList<Route> listeRoutes = new ArrayList<Route>();
+        for (Label label : listeLabel){
+            if (label.getNumPere() != null) {
+                ArrayList<Route> listeRouteLabel = this.gr.getListeNoeuds().get(label.getNumPere()).getListeRoutes();
+                for (Route route : listeRouteLabel) {
+                    if (route.getNoeudDest() == label.getNumSommetCourant()) {
+                        listeRoutes.add(route);
+                    }
+                }
+            }
         }
+        return listeRoutes;
     }
-
-    public Label getLabel(int numNoeud){    return this.listeLabel.get(numNoeud);   }
 
     public void run() {
         System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
         // A vous d'implementer la recherche de plus court chemin.
+    }
+
+    public Graphe revertGr (){
+        Graphe revert = this.gr;
+        for (Noeud noeud : gr.getListeNoeuds()){
+            for (Route route : noeud.getListeRoutes()){
+                if (route.getDescripteur().isSensUnique()){
+
+                }
+            }
+        }
+        return  revert;
     }
 
 }

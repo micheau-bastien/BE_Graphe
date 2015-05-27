@@ -233,6 +233,11 @@ public class BinaryHeap<E extends Comparable<E>> {
         this.array.remove(getPosition(e));
 	}
 
+	public void viderTas(){
+		while(!this.isEmpty()){
+			this.deleteMin();
+		}
+	}
     // Test program : compare with the reference implementation PriorityQueue.
     public static void main(String [] args) {
 			BinaryHeap<Integer> heap = new BinaryHeap<Integer>() ;

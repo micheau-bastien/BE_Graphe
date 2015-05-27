@@ -25,6 +25,7 @@ public class Noeud {
 	private int numNoeud;
 	private static int nbNoeud = 0;
 	private ArrayList<Route> listeRoutes = new ArrayList<Route>();
+	private ArrayList<Route> listeRoutesParent = new ArrayList<Route>();
 	private int nbRoutes = 0;
 	
 	/* public Noeud(DataInputStream dis) throws IOException{

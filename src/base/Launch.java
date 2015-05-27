@@ -15,6 +15,7 @@ package base ;
 
 import core.* ;
 import java.io.* ;
+import java.util.ArrayList;
 
 public class Launch {
 
@@ -26,21 +27,23 @@ public class Launch {
 
     public void afficherMenu () {
 	System.out.println () ;
-	System.out.println ("MENU") ;
+	System.out.println (" MENU ") ;
 	System.out.println () ;
 	System.out.println ("0 - Quitter") ;
 	System.out.println ("1 - Composantes Connexes") ;
-	System.out.println ("2 - Plus court chemin standard") ;
-	System.out.println ("3 - Plus court chemin A-star") ;
+	System.out.println ("2 - Plus court chemin standard (Click)") ;
+	System.out.println ("3 - Plus court chemin A-star (Click)") ;
 	System.out.println ("4 - Cliquer sur la carte pour obtenir un numero de sommet.") ;
 	System.out.println ("5 - Charger un fichier de chemin (.path) et le verifier.") ;
 	System.out.println ("6 - Test Unitaire.") ;
 	System.out.println ("7 - Chemin") ;
+	System.out.println ("8 - Covoiturage (Click)") ;
+	System.out.println ("9 - FastTest") ;
 
 	System.out.println () ;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
 		Launch launch = new Launch(args) ;
 		launch.go() ;
     }
@@ -80,10 +83,24 @@ public class Launch {
 
 			case 1 : algo = new Connexite(graphe, this.fichierSortie (), this.readarg) ; break ;
 		
-			case 2 : algo = new Pcc(graphe, this.fichierSortie (), this.readarg) ; break ;
+			case 2 :
+				boolean isTime = (readarg.lireInt("En temps (1) ou en distance(0 ou autre) ? ") ==1);
+				System.out.println("Choix du départ : ");
+				int depart = graphe.getNumNoeudFromClick();
+				System.out.println("Choix de l'arrivée : ");
+				int arrivee = graphe.getNumNoeudFromClick();
+				algo = new Pcc(graphe, this.fichierSortie (), this.readarg, depart, arrivee, isTime) ;
+				break ;
 		
-			case 3 : algo = new PccStar(graphe, this.fichierSortie (), this.readarg) ; break ;
-	
+			case 3 :
+				boolean isTimeStar = (readarg.lireInt("En temps (1) ou en distance(0 ou autre) ? ") ==1);
+				System.out.println("Choix du départ : ");
+				int departStar = graphe.getNumNoeudFromClick();
+				System.out.println("Choix de l'arrivée : ");
+				int arriveeStar = graphe.getNumNoeudFromClick();
+				algo = new Pcc(graphe, this.fichierSortie (), this.readarg, departStar, arriveeStar, isTimeStar) ;
+				break ;
+
 			case 4 : graphe.situerClick() ; break ;
 
 			case 5 :
@@ -99,6 +116,36 @@ public class Launch {
 				Chemin chemin = new Chemin(cheminData, graphe);
 				System.out.println("Temps du trajet  : " + chemin.tempsChemin());
 				System.out.println("Longueur du trajet : " + chemin.longueurChemin());
+				break;
+			case 8 :
+				int vitPiet = readarg.lireInt("Vitesse du piéton ? ");
+				System.out.println();
+				System.out.println("Choix du départ de la voiture : ");
+				int voiture = graphe.getNumNoeudFromClick();
+				System.out.println("Choix du départ du piéton : ");
+				int pieton = graphe.getNumNoeudFromClick();
+				System.out.println("Choix de la destination : ");
+				int arrive = graphe.getNumNoeudFromClick();
+				System.out.println();
+				System.out.println("Calcul du covoiturage : ");
+
+				algo = new Covoiturage(graphe, this.fichierSortie(), this.readarg, voiture, pieton, arrive, vitPiet );
+				break;
+			case 9 :
+				System.out.println () ;
+				System.out.println ("           FastTest ") ;
+				System.out.println () ;
+				System.out.println ("          0 - Quitter") ;
+				System.out.println ("          1 - Dijkstra") ;
+				System.out.println ("          2 - A-Star") ;
+				System.out.println ("          3 - Covoiturage") ;
+				int choixTest = this.readarg.lireInt ("Votre choix ? ") ;
+				switch (choixTest) {
+					case 0 : 	continuer = false ; break ;
+					case 1 :	algo = new Pcc(graphe, this.fichierSortie (), this.readarg, readarg.lireInt("Départ ? "), readarg.lireInt("Arrivee ? "), (readarg.lireInt("Temps (1) ou distance (Autre) ? ")==1));	break ;
+					case 2 :	algo = new PccStar(graphe, this.fichierSortie (), this.readarg, readarg.lireInt("Départ ? "), readarg.lireInt("Arrivee ? "), (readarg.lireInt("Temps (1) ou distance (Autre) ? ")==1));	break ;
+					case 3 :	algo = new Covoiturage(graphe, this.fichierSortie (), this.readarg, readarg.lireInt("Voiture ? "), readarg.lireInt("Pieton ? "), readarg.lireInt("Destination ? "), readarg.lireInt("Vitesse pieton ? "));	break ;
+				}
 				break;
 
 		default:
@@ -123,7 +170,7 @@ public class Launch {
     public PrintStream fichierSortie () {
 		PrintStream result = System.out ;
 
-		String nom = this.readarg.lireString ("Nom du fichier de sortie ? ") ;
+		String nom = "oiu";
 
 		if ("".equals(nom)) { nom = "/dev/null" ; }
 
