@@ -55,12 +55,10 @@ public class Pcc extends Algo {
         for (Noeud noeud : this.gr.getListeNoeuds()){
             this.listeLabel.add(null);
         }
-
         // On défini le premier label à regarder et on l'ajoute au tas
         this.listeLabel.set(this.origine, new Label(null, this.origine, 0, true, pccTime));
         this.tasLabel.insert(this.listeLabel.get(this.origine));
         nbDansTas++;
-
         // Tant que non trouvé et que le tas n'est pas vide
         while (!this.tasLabel.isEmpty()){
             // On défini le label et ne noeud courant ET on supprime le minimum

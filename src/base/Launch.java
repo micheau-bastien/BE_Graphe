@@ -98,7 +98,7 @@ public class Launch {
 				int departStar = graphe.getNumNoeudFromClick();
 				System.out.println("Choix de l'arrivée : ");
 				int arriveeStar = graphe.getNumNoeudFromClick();
-				algo = new Pcc(graphe, this.fichierSortie (), this.readarg, departStar, arriveeStar, isTimeStar) ;
+				algo = new PccStar(graphe, this.fichierSortie (), this.readarg, departStar, arriveeStar, isTimeStar) ;
 				break ;
 
 			case 4 : graphe.situerClick() ; break ;
@@ -127,7 +127,7 @@ public class Launch {
 				System.out.println("Choix de la destination : ");
 				int arrive = graphe.getNumNoeudFromClick();
 				System.out.println();
-				System.out.println("Calcul du covoiturage : ");
+				System.out.println("Calcul du covoiturage : "+voiture+"  "+pieton+"  "+arrive);
 
 				algo = new Covoiturage(graphe, this.fichierSortie(), this.readarg, voiture, pieton, arrive, vitPiet );
 				break;

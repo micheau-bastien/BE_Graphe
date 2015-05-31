@@ -23,6 +23,7 @@ public class PccStar extends Pcc {
     }
 
     public ArrayList<Label> Dijkstra(){
+        System.out.println();
         this.tasLabel.viderTas();
         this.listeLabel.clear();
         System.out.println("A-STAR : ");
@@ -59,6 +60,13 @@ public class PccStar extends Pcc {
                 if(pccTime){    cout = listeLabel.get(numCourant).getCout() + (60*r.getLongueur())/(1000*r.getVitMax()); }
                 else {  cout = listeLabel.get(numCourant).getCout()+r.getLongueur(); }
                 numDest = r.getNoeudDest();
+                gr.getDessin().setColor(Color.pink);
+                float longitudeDep, latitudeDep, longitudeArr, latitudeArr;
+                longitudeArr = gr.getListeNoeuds().get(numDest).getLongitude();
+                latitudeArr = gr.getListeNoeuds().get(numDest).getLatitude();
+                longitudeDep = gr.getListeNoeuds().get(numCourant).getLongitude();
+                latitudeDep = gr.getListeNoeuds().get(numCourant).getLatitude();
+                gr.getDessin().drawLine(longitudeDep, latitudeDep, longitudeArr, latitudeArr);
                 if(this.listeLabel.get(numDest) == null){
                     this.listeLabel.set(numDest, new Label(numCourant, numDest, Float.MAX_VALUE, false, pccTime));
                 }
