@@ -46,8 +46,6 @@ public class Pcc extends Algo {
         this.tasLabel.viderTas();
         this.listeLabel.clear();
         System.out.println("Dijkstra : ");
-        tasLabel.viderTas();
-        this.listeLabel.clear();
         // On prend le temps initial du programme (Estimation de performance)
         long tempsInit = System.currentTimeMillis(), duree;
         int nbTas = 0, nbDansTas = 0, nbDansTasMax = 0, numCourant, numDest;
@@ -124,7 +122,6 @@ public class Pcc extends Algo {
                 longitudeDep = longitudeArr;
                 latitudeDep = latitudeArr;
             }
-            //System.out.println("A afficher "+l.getNumPere()+ " : "+longitudeArr+"     "+ latitudeArr +" "+l.getNumSommetCourant()+"    "+ longitudeDep+"     "+latitudeDep);
             gr.getDessin().drawLine(longitudeDep, latitudeDep, longitudeArr, latitudeArr) ;
         }
         Chemin chemin = new Chemin(listeFinal.size(), this.destination, this.origine, LabelToRoad(listeFinal));
@@ -149,19 +146,6 @@ public class Pcc extends Algo {
 
     public void run() {
         System.out.println("Run PCC de " + zoneOrigine + ":" + origine + " vers " + zoneDestination + ":" + destination) ;
-        // A vous d'implementer la recherche de plus court chemin.
-    }
-
-    public Graphe revertGr (){
-        Graphe revert = this.gr;
-        for (Noeud noeud : gr.getListeNoeuds()){
-            for (Route route : noeud.getListeRoutes()){
-                if (route.getDescripteur().isSensUnique()){
-
-                }
-            }
-        }
-        return  revert;
     }
 
 }
